@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonia’s Synapse & Sips Passport</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -17,26 +16,28 @@
         </header>
 
         <main id="passport-form">
-            <section class="card flow-section">
+            <!-- SECTION: What's in the cup (Stacked Alignment) -->
+            <section class="card">
                 <h2 class="section-title">What's in the cup?</h2>
                 <div class="cup-toggle">
                     <label class="cup-option">
                         <input type="radio" name="baseType" value="coffee" checked>
                         <div class="cup-card">
-                            <img src="coffee-glass.png" alt="Coffee">
+                            <img src="coffee-glass.png" alt="Coffee Icon">
                             <span>Coffee</span>
                         </div>
                     </label>
                     <label class="cup-option">
                         <input type="radio" name="baseType" value="matcha">
                         <div class="cup-card">
-                            <img src="matcha-glass.png" alt="Matcha">
+                            <img src="matcha-glass.png" alt="Matcha Icon">
                             <span>Matcha</span>
                         </div>
                     </label>
                 </div>
             </section>
 
+            <!-- SECTION: Sip Details -->
             <section class="card">
                 <h2 class="section-title">What are we sipping?</h2>
                 <div class="input-group">
@@ -53,12 +54,13 @@
                 </div>
             </section>
 
+            <!-- SECTION: Taste Profile (VHS OSD Numbers) -->
             <section class="card taste-profile">
                 <div class="slider-row">
                     <div class="slider-label-box">
-                        <img src="bitter.png" alt="Bitter">
+                        <img src="bitter.png" alt="Bitter icon">
                         <h3>Bitterness</h3>
-                        <img src="sweet.png" alt="Sweet">
+                        <img src="sweet.png" alt="Sweet icon">
                     </div>
                     <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="bitterSlider">
                     <div class="osd-value" id="bitterVal">05</div>
@@ -66,22 +68,25 @@
 
                 <div class="slider-row">
                     <div class="slider-label-box">
-                        <img src="empty-glass.png" alt="Thin">
+                        <img src="empty-glass.png" alt="Thin icon">
                         <h3>Smoothness</h3>
-                        <img src="drinking.png" alt="Smooth">
+                        <img src="drinking.png" alt="Smooth icon">
                     </div>
                     <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="smoothSlider">
                     <div class="osd-value" id="smoothVal">05</div>
                 </div>
             </section>
 
+            <!-- SECTION: Sweetness (8 Sugar Cubes) -->
             <section class="card sweetness-box">
                 <h3 class="center-title">Sweetness Level</h3>
                 <div class="sugar-row" id="sugarContainer">
-                    </div>
-                <div id="sweetComment" class="comment-popup">Pick a cube!</div>
+                    <!-- Javascript will inject 8 cubes here -->
+                </div>
+                <div id="sweetComment" class="comment-popup">Select your sweetness!</div>
             </section>
 
+            <!-- SECTION: Adjusted Field -->
             <section class="card adjustment-box">
                 <div class="standard-row">
                     <span>Standard</span>
@@ -92,37 +97,39 @@
                     <span>Adjusted</span>
                 </div>
                 <div id="adjNotes" class="hidden-notes">
-                    <textarea placeholder="What changes were made?"></textarea>
+                    <textarea placeholder="What changes were made to the drink?"></textarea>
                 </div>
             </section>
 
+            <!-- SECTION: Would I go again? -->
             <section class="card">
                 <h3 class="center-title">Would I go again?</h3>
                 <div class="return-options">
                     <label class="return-btn">
                         <input type="radio" name="returnChoice" value="yes">
                         <div class="return-content">
-                            <img src="again.png">
+                            <img src="again.png" alt="Yes">
                             <span>Absolutely!</span>
                         </div>
                     </label>
                     <label class="return-btn">
                         <input type="radio" name="returnChoice" value="maybe">
                         <div class="return-content">
-                            <img src="matcha-sitting.png">
+                            <img src="matcha-sitting.png" alt="Maybe">
                             <span>Maybe...</span>
                         </div>
                     </label>
                     <label class="return-btn">
                         <input type="radio" name="returnChoice" value="no">
                         <div class="return-content">
-                            <img src="drinking.png">
-                            <span>Wouldn't rush back...</span>
+                            <img src="drinking.png" alt="No">
+                            <span>Wouldn't rush...</span>
                         </div>
                     </label>
                 </div>
             </section>
 
+            <!-- SECTION: Final Rating -->
             <section class="card">
                 <h3 class="center-title">Overall Score</h3>
                 <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider" id="scoreSlider">
@@ -133,6 +140,7 @@
             <a href="#" class="view-link">View my past entries</a>
         </main>
         
+        <!-- Decorative Buddies -->
         <img src="matcha-bowl.png" class="buddy-icon left-buddy">
         <img src="matcha-sitting.png" class="buddy-icon right-buddy">
     </div>
