@@ -13,13 +13,12 @@
         <!-- Main Form Page -->
         <div id="main-page">
             <header>
-                <img src="cafe.png" alt="Cafe" class="header-icon bounce">
+                <img src="cafe.png" alt="Cafe" class="header-icon-static">
                 <h1>Sonia’s Synapse & Sips Passport</h1>
                 <p class="obi-tag">OBI Internship 2026 • Toronto</p>
             </header>
 
             <main>
-                <!-- Selection -->
                 <section class="card">
                     <h2 class="section-title">What's in the cup?</h2>
                     <div class="cup-toggle">
@@ -50,9 +49,12 @@
                         <label>Drink Order</label>
                         <input type="text" id="drinkName" placeholder="oat milk matcha latte">
                     </div>
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" id="sipDate">
+                    </div>
                 </section>
 
-                <!-- Combined Taste Slider -->
                 <section class="card">
                     <h2 class="section-title">Taste Spectrum</h2>
                     <div class="slider-row">
@@ -66,7 +68,6 @@
                     </div>
                 </section>
 
-                <!-- 6 Sugar Cubes -->
                 <section class="card">
                     <h2 class="section-title">Sweetness Level</h2>
                     <div class="sugar-row" id="sugarContainer"></div>
@@ -125,17 +126,16 @@
             </main>
         </div>
 
-        <!-- History Page (Hidden by default) -->
+        <!-- History Page -->
         <div id="history-page" class="hidden">
             <header>
-                <h1 class="history-title">Synapse and Sips Passport</h1>
-                <p class="obi-tag">Your SIP History</p>
+                <h1 class="history-title">Passport History</h1>
+                <p class="obi-tag">Your SIP Collection</p>
             </header>
             <div id="history-list"></div>
-            <button class="stamp-btn back-btn" id="backToForm">Back to Entry</button>
+            <button class="stamp-btn back-btn" id="backToForm">Add New Entry</button>
         </div>
         
-        <!-- Animated Elements -->
         <img src="matcha-bowl.png" class="buddy-icon left-buddy float-anim">
         <img src="matcha-sitting.png" class="buddy-icon right-buddy float-anim-alt">
     </div>
