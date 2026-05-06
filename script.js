@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Set default date to today
+    document.getElementById('sipDate').valueAsDate = new Date();
+
     // 1. Generate 6 Sugar Cubes
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
@@ -7,16 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
         "Getting cozy!", "Sugar Rush!", "Sugar Tooth Unlocked!"
     ];
 
-    let currentSweetness = 0;
-
     for (let i = 1; i <= 6; i++) {
         const cube = document.createElement('img');
         cube.src = 'empty-cube.png';
         cube.className = 'sugar-cube';
-        cube.onclick = () => {
-            currentSweetness = i;
-            updateCubes(i);
-        };
+        cube.onclick = () => updateCubes(i);
         sugarContainer.appendChild(cube);
     }
 
@@ -29,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sweetComment.textContent = sugarMessages[index - 1];
     }
 
-    // 2. Sliders (No leading zeros, small size)
+    // 2. Slider Logic
     const tasteSlider = document.getElementById('tasteSlider');
     const tasteVal = document.getElementById('tasteVal');
     const scoreSlider = document.getElementById('scoreSlider');
@@ -46,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Color Theme (Subtitles & Accents)
     const baseRadios = document.getElementsByName('baseType');
     const root = document.documentElement;
-    const titles = document.querySelectorAll('.section-title, h1, .standard-row');
 
     baseRadios.forEach(r => {
         r.onchange = function() {
@@ -55,17 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // 5. Passport Storage Logic
+    // 5. Passport Storage Logic (LocalStorage)
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.onclick = () => {
         const entry = {
-            cafe: document.getElementById('cafeName').value || "Unknown Cafe",
-            drink: document.getElementById('drinkName').value || "Mystery Sip",
+            cafe: document.getElementById('cafeName').value || "Cafe Incognito",
+            drink: document.getElementById('drinkName').value || "The Regular",
             score: scoreSlider.value,
             again: document.querySelector('input[name="returnChoice"]:checked').value,
-            date: new Date().toLocaleDateString()
+            date: document.getElementById('sipDate').value
         };
 
+        // Save to browser cache
         const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
         history.unshift(entry);
         localStorage.setItem('sipHistory', JSON.stringify(history));
@@ -73,11 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = "Stamped! ✨";
         setTimeout(() => {
             submitBtn.textContent = "Stamp my passport!";
-            window.location.reload(); 
+            location.reload(); 
         }, 1000);
     };
 
-    // 6. Navigation to History
+    // 6. Navigation Logic
     const mainPage = document.getElementById('main-page');
     const historyPage = document.getElementById('history-page');
     const historyList = document.getElementById('history-list');
@@ -101,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'history-item';
             div.innerHTML = `
                 <h4>${item.cafe}</h4>
-                <p><strong>Drink:</strong> ${item.drink}</p>
-                <p><strong>Score:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
-                <p style="font-size:0.6rem; color:#aaa;">${item.date}</p>
+                <p><strong>Order:</strong> ${item.drink}</p>
+                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
+                <p style="font-size:0.7rem; color:#ccc;">Visited: ${item.date}</p>
             `;
             historyList.appendChild(div);
         });
