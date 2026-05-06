@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Set default date to today
-    document.getElementById('sipDate').valueAsDate = new Date();
+    // Set default date
+    const dateField = document.getElementById('sipDate');
+    if(dateField) dateField.valueAsDate = new Date();
 
     // 1. Generate 6 Sugar Cubes
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
     const sugarMessages = [
-        "Pure & Raw", "Hint of Sugar", "Just right!", 
-        "Getting cozy!", "Sugar Rush!", "Sugar Tooth Unlocked!"
+        "PURE & RAW", "HINT OF SUGAR", "JUST RIGHT", 
+        "GETTING COZY", "SUGAR RUSH", "SUGAR TOOTH UNLOCKED"
     ];
 
     for (let i = 1; i <= 6; i++) {
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sweetComment.textContent = sugarMessages[index - 1];
     }
 
-    // 2. Slider Logic
+    // 2. Slider Sync
     const tasteSlider = document.getElementById('tasteSlider');
     const tasteVal = document.getElementById('tasteVal');
     const scoreSlider = document.getElementById('scoreSlider');
@@ -36,12 +37,18 @@ document.addEventListener('DOMContentLoaded', () => {
     tasteSlider.oninput = function() { tasteVal.textContent = this.value; };
     scoreSlider.oninput = function() { scoreVal.textContent = parseFloat(this.value).toFixed(1); };
 
-    // 3. Adjusted Toggle
+    // 3. Adjusted Toggle Logic
     const adjCheck = document.getElementById('adjCheck');
     const adjNotes = document.getElementById('adjNotes');
-    adjCheck.onchange = () => adjNotes.classList.toggle('show', adjCheck.checked);
+    adjCheck.onchange = () => {
+        if (adjCheck.checked) {
+            adjNotes.classList.add('show');
+        } else {
+            adjNotes.classList.remove('show');
+        }
+    };
 
-    // 4. Color Theme (Subtitles & Accents)
+    // 4. Color Theme Shift
     const baseRadios = document.getElementsByName('baseType');
     const root = document.documentElement;
 
@@ -52,18 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // 5. Passport Storage Logic (LocalStorage)
+    // 5. Submit & LocalStorage
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.onclick = () => {
         const entry = {
-            cafe: document.getElementById('cafeName').value || "Cafe Incognito",
-            drink: document.getElementById('drinkName').value || "The Regular",
+            cafe: document.getElementById('cafeName').value || "Unknown Cafe",
+            drink: document.getElementById('drinkName').value || "Untitled Drink",
             score: scoreSlider.value,
             again: document.querySelector('input[name="returnChoice"]:checked').value,
-            date: document.getElementById('sipDate').value
+            date: dateField.value,
+            adjusted: adjCheck.checked ? document.getElementById('adjInput').value : "No adjustments"
         };
 
-        // Save to browser cache
         const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
         history.unshift(entry);
         localStorage.setItem('sipHistory', JSON.stringify(history));
@@ -72,36 +79,39 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             submitBtn.textContent = "Stamp my passport!";
             location.reload(); 
-        }, 1000);
+        }, 800);
     };
 
-    // 6. Navigation Logic
+    // 6. Navigation Logic (Isolated View)
     const mainPage = document.getElementById('main-page');
     const historyPage = document.getElementById('history-page');
     const historyList = document.getElementById('history-list');
 
     document.getElementById('viewPassport').onclick = () => {
-        mainPage.classList.add('hidden');
-        historyPage.classList.remove('hidden');
+        mainPage.style.display = 'none'; // Completely remove from layout
+        historyPage.classList.remove('hidden-page');
         renderHistory();
+        window.scrollTo(0, 0);
     };
 
     document.getElementById('backToForm').onclick = () => {
-        historyPage.classList.add('hidden');
-        mainPage.classList.remove('hidden');
+        historyPage.classList.add('hidden-page');
+        mainPage.style.display = 'block';
+        window.scrollTo(0, 0);
     };
 
     function renderHistory() {
         const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; opacity:0.5;">No stamps yet!</p>';
+        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; opacity:0.5; font-family:MatchaCih; padding:40px;">Your passport is empty!</p>';
         history.forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
             div.innerHTML = `
                 <h4>${item.cafe}</h4>
-                <p><strong>Order:</strong> ${item.drink}</p>
-                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
-                <p style="font-size:0.7rem; color:#ccc;">Visited: ${item.date}</p>
+                <p><strong>Drink:</strong> ${item.drink}</p>
+                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Return:</strong> ${item.again}</p>
+                <p><strong>Adjustments:</strong> ${item.adjusted}</p>
+                <p style="font-size:0.75rem; color:#ccc; margin-top:10px;">Visited: ${item.date}</p>
             `;
             historyList.appendChild(div);
         });
