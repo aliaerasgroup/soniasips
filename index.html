@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonia’s Synapse & Sips Passport</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="mobile-container">
+    <div class="app-wrapper">
         <header>
-            <img src="cafe.png" alt="Cafe Icon" class="header-icon float-anim">
-            <h1>Sonia’s Synapse & Sips</h1>
-            <p class="subtitle">Ontario Brain Institute Internship 2026</p>
+            <img src="cafe.png" alt="Cafe Icon" class="header-icon bounce">
+            <h1>Sonia’s Synapse & Sips Passport</h1>
+            <p class="obi-tag">Ontario Brain Institute Internship • Toronto</p>
         </header>
 
-        <main id="app-form">
-            <section class="card drink-toggle">
-                <div class="toggle-group">
-                    <label class="toggle-item">
-                        <input type="radio" name="drinkType" value="coffee" checked>
-                        <div class="toggle-box">
-                            <img src="coffee-glass.png" alt="Coffee">
+        <main id="passport-form">
+            <section class="card flow-section">
+                <h2 class="section-title">What's in the cup?</h2>
+                <div class="cup-toggle">
+                    <label class="cup-option">
+                        <input type="radio" name="baseType" value="coffee" checked>
+                        <div class="cup-card">
+                            <img src="coffee-glass.png" alt="Iced Coffee">
                             <span>Coffee</span>
                         </div>
                     </label>
-                    <label class="toggle-item">
-                        <input type="radio" name="drinkType" value="matcha">
-                        <div class="toggle-box">
+                    <label class="cup-option">
+                        <input type="radio" name="baseType" value="matcha">
+                        <div class="cup-card">
                             <img src="matcha-glass.png" alt="Matcha">
                             <span>Matcha</span>
                         </div>
@@ -37,62 +38,103 @@
             </section>
 
             <section class="card">
-                <input type="text" id="drinkName" placeholder="What are we sipping?" class="input-field">
-                <div class="standard-adj">
+                <h2 class="section-title">What are we sipping?</h2>
+                <div class="input-group">
+                    <label>Cafe Name</label>
+                    <input type="text" id="cafeName" placeholder="RoastAroma Specialty Cafe">
+                </div>
+                <div class="input-group">
+                    <label>Drink Order</label>
+                    <input type="text" id="drinkName" placeholder="oat milk matcha latte">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="sipDate">
+                </div>
+            </section>
+
+            <section class="card taste-profile">
+                <div class="slider-row">
+                    <div class="slider-label-box">
+                        <img src="bitter.png" alt="Bitter">
+                        <h3>Bitterness</h3>
+                        <img src="sweet.png" alt="Sweet">
+                    </div>
+                    <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="bitterSlider">
+                    <div class="slider-value" id="bitterVal">5</div>
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-label-box">
+                        <img src="empty-glass.png" alt="Thin">
+                        <h3>Smoothness</h3>
+                        <img src="drinking.png" alt="Smooth">
+                    </div>
+                    <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="smoothSlider">
+                    <div class="slider-value" id="smoothVal">5</div>
+                </div>
+            </section>
+
+            <section class="card sweetness-box">
+                <h3 class="center-title">Sweetness Level</h3>
+                <div class="sugar-row" id="sugarContainer">
+                    </div>
+                <div id="sweetComment" class="comment-popup">Pick a cube!</div>
+            </section>
+
+            <section class="card adjustment-box">
+                <div class="standard-row">
                     <span>Standard</span>
-                    <label class="switch">
-                        <input type="checkbox" id="isAdjusted">
-                        <span class="slider-toggle round"></span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="adjCheck">
+                        <span class="toggle-slider"></span>
                     </label>
                     <span>Adjusted</span>
                 </div>
-            </section>
-
-            <section class="card sweetness-selector">
-                <h3>Sweetness Level</h3>
-                <div class="cube-row" id="sugarCubes">
-                    <img src="empty-cube.png" data-value="1" class="cube">
-                    <img src="empty-cube.png" data-value="2" class="cube">
-                    <img src="empty-cube.png" data-value="3" class="cube">
-                    <img src="empty-cube.png" data-value="4" class="cube">
-                    <img src="empty-cube.png" data-value="5" class="cube">
+                <div id="adjNotes" class="hidden-notes">
+                    <textarea placeholder="What changes were made? (e.g., less ice, extra shot...)"></textarea>
                 </div>
-            </section>
-
-            <section class="card slider-card">
-                <div class="slider-header">
-                    <img src="bitter.png" class="end-icon" alt="Bitter">
-                    <h3>Bitterness</h3>
-                    <img src="sweet.png" class="end-icon" alt="Sweet">
-                </div>
-                <input type="range" min="1" max="100" value="50" class="styled-slider" id="bitterSlider">
-                
-                <div class="slider-header mt-20">
-                    <img src="empty-glass.png" class="end-icon" alt="Thin">
-                    <h3>Smoothness</h3>
-                    <img src="drinking.png" class="end-icon" alt="Smooth">
-                </div>
-                <input type="range" min="1" max="100" value="50" class="styled-slider" id="smoothSlider">
             </section>
 
             <section class="card">
-                <h3>Overall Synapse Score</h3>
-                <input type="range" min="1" max="5" step="0.5" value="3" class="styled-slider rating-slider" id="overallRating">
-                <div class="rating-display"><span id="ratingValue">3.0</span> / 5</div>
+                <h3 class="center-title">Would I go again?</h3>
+                <div class="return-options">
+                    <label class="return-btn">
+                        <input type="radio" name="returnChoice" value="yes">
+                        <div class="return-content">
+                            <img src="again.png">
+                            <span>Absolutely!</span>
+                        </div>
+                    </label>
+                    <label class="return-btn">
+                        <input type="radio" name="returnChoice" value="maybe">
+                        <div class="return-content">
+                            <img src="matcha-sitting.png">
+                            <span>Maybe...</span>
+                        </div>
+                    </label>
+                    <label class="return-btn">
+                        <input type="radio" name="returnChoice" value="no">
+                        <div class="return-content">
+                            <img src="drinking.png">
+                            <span>Wouldn't rush back...</span>
+                        </div>
+                    </label>
+                </div>
             </section>
 
-            <section class="card again-card">
-                <button id="againBtn" class="again-toggle">
-                    <img src="again.png" alt="Again?">
-                    <span>Would I get it again?</span>
-                </button>
+            <section class="card">
+                <h3 class="center-title">Overall Score</h3>
+                <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider large-slider" id="scoreSlider">
+                <div class="final-score" id="scoreVal">3.0</div>
             </section>
 
-            <button class="submit-btn" id="saveEntry">Log Entry</button>
+            <button class="stamp-btn" id="submitBtn">Stamp my passport!</button>
+            <a href="#" class="view-link">View my past entries</a>
         </main>
-
-        <img src="matcha-sitting.png" class="buddy-icon left-buddy">
-        <img src="matcha-bowl.png" class="buddy-icon right-buddy">
+        
+        <img src="matcha-bowl.png" class="buddy-icon left-buddy">
+        <img src="matcha-glass.png" class="buddy-icon right-buddy">
     </div>
 
     <script src="script.js"></script>
