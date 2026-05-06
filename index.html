@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sonia’s Synapse & Sips Passport</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
             </header>
 
             <main>
+                <!-- Selection -->
                 <section class="card">
                     <h2 class="section-title">What's in the cup?</h2>
                     <div class="cup-toggle">
@@ -39,6 +40,7 @@
                     </div>
                 </section>
 
+                <!-- Sipping Details -->
                 <section class="card">
                     <h2 class="section-title">What are we sipping?</h2>
                     <div class="input-group">
@@ -55,6 +57,7 @@
                     </div>
                 </section>
 
+                <!-- Taste Profile -->
                 <section class="card">
                     <h2 class="section-title">Taste Spectrum</h2>
                     <div class="slider-row">
@@ -68,12 +71,14 @@
                     </div>
                 </section>
 
+                <!-- Sweetness -->
                 <section class="card">
                     <h2 class="section-title">Sweetness Level</h2>
                     <div class="sugar-row" id="sugarContainer"></div>
-                    <div id="sweetComment" class="comment-popup">Pick a cube!</div>
+                    <div id="sweetComment" class="comment-popup-osd">Pick a cube!</div>
                 </section>
 
+                <!-- Adjusted Logic -->
                 <section class="card">
                     <div class="standard-row">
                         <span>Standard</span>
@@ -84,10 +89,13 @@
                         <span>Adjusted</span>
                     </div>
                     <div id="adjNotes" class="hidden-notes">
-                        <textarea id="adjInput" placeholder="What changes were made?"></textarea>
+                        <div class="textarea-container">
+                            <textarea id="adjInput" placeholder="What changes were made?"></textarea>
+                        </div>
                     </div>
                 </section>
 
+                <!-- Return Options -->
                 <section class="card">
                     <h2 class="section-title">Would I go again?</h2>
                     <div class="return-options">
@@ -127,13 +135,13 @@
         </div>
 
         <!-- History Page -->
-        <div id="history-page" class="hidden">
+        <div id="history-page" class="hidden-page">
             <header>
-                <h1 class="history-title">Passport History</h1>
-                <p class="obi-tag">Your SIP Collection</p>
+                <h1 class="history-title">Synapse and Sips</h1>
+                <p class="obi-tag">Your Passport History</p>
             </header>
             <div id="history-list"></div>
-            <button class="stamp-btn back-btn" id="backToForm">Add New Entry</button>
+            <button class="stamp-btn back-btn" id="backToForm">Back to Entry</button>
         </div>
         
         <img src="matcha-bowl.png" class="buddy-icon left-buddy float-anim">
