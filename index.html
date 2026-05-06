@@ -14,7 +14,7 @@
             <header>
                 <img src="cafe.png" alt="Cafe" class="header-icon-static">
                 <h1>Sonia’s Synapse & Sips Passport</h1>
-                <p class="obi-tag">Ontario Brain Institute Internship 2026 • Toronto</p>
+                <p class="obi-tag">OBI Internship 2026 • Toronto</p>
             </header>
 
             <main>
@@ -56,14 +56,14 @@
 
                 <section class="card">
                     <h2 class="section-title">Taste Spectrum</h2>
-                    <div class="slider-row">
-                        <div class="slider-label-box">
-                            <img src="bitter.png" alt="Bitter" class="slider-icon">
+                    <div class="slider-container">
+                        <div class="slider-labels">
+                            <img src="bitter.png" alt="Bitter" class="end-icon">
                             <h3>Bitter to Smooth</h3>
-                            <img src="sweet.png" alt="Smooth" class="slider-icon">
+                            <img src="sweet.png" alt="Smooth" class="end-icon">
                         </div>
                         <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="tasteSlider">
-                        <div class="os_comment" id="tasteVal">5</div>
+                        <div class="osd-value-center" id="tasteVal">5</div>
                     </div>
                 </section>
 
@@ -83,15 +83,13 @@
                         <span>Adjusted</span>
                     </div>
                     <div id="adjNotes" class="hidden-notes">
-                        <div class="textarea-container">
-                            <textarea id="adjInput" placeholder="What changes were made?"></textarea>
-                        </div>
+                        <textarea id="adjInput" placeholder="What changes were made?"></textarea>
                     </div>
                 </section>
 
                 <section class="card">
                     <h2 class="section-title">Would I go again?</h2>
-                    <div class="return-options">
+                    <div class="return-grid">
                         <label class="return-btn">
                             <input type="radio" name="returnChoice" value="Absolutely!" checked>
                             <div class="return-content">
@@ -118,8 +116,10 @@
 
                 <section class="card">
                     <h2 class="section-title">Overall Score</h2>
-                    <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider" id="scoreSlider">
-                    <div class="os_comment score-large" id="scoreVal">3.0</div>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider" id="scoreSlider">
+                        <div class="osd-value-center score-large" id="scoreVal">3.0</div>
+                    </div>
                 </section>
 
                 <button class="stamp-btn" id="submitBtn">Stamp my passport!</button>
@@ -127,16 +127,17 @@
             </main>
         </div>
 
-        <div id="history-page" class="hidden-page">
+        <div id="history-page" class="hidden-view">
             <header>
-                <h1 class="history-title">Synapse and Sips</h1>
-                <p class="obi-tag">Your Passport History</p>
+                <h1 class="history-title">Passport History</h1>
+                <p class="obi-tag">Sonia's Brainy Brews</p>
             </header>
             <div id="history-list"></div>
-            <button class="stamp-btn back-btn" id="backToForm">Back to Entry</button>
+            <button class="stamp-btn back-btn" id="backToForm">New Entry</button>
         </div>
         
-        <img src="matcha-bowl.png" class="buddy-icon left-buddy"> <img src="matcha-sitting.png" class="buddy-icon right-buddy float-anim">
+        <img src="matcha-bowl.png" class="bg-buddy bowl-static">
+        <img src="matcha-sitting.png" class="bg-buddy sitter-float">
     </div>
 
     <script src="script.js"></script>
