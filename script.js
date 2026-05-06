@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Date setup
-    const dateField = document.getElementById('sipDate');
-    if(dateField) dateField.valueAsDate = new Date();
+    // 1. Date Initialization
+    const dateInput = document.getElementById('sipDate');
+    if(dateInput) dateInput.valueAsDate = new Date();
 
-    // 2. 6 Sugar Cubes
+    // 2. Sugar Cube Generator (6 cubes)
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
     const sugarMessages = [
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sweetComment.textContent = sugarMessages[index - 1];
     }
 
-    // 3. Slider updates
+    // 3. Slider Sync (Centered Numbers)
     const tasteSlider = document.getElementById('tasteSlider');
     const tasteVal = document.getElementById('tasteVal');
     const scoreSlider = document.getElementById('scoreSlider');
@@ -37,19 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
     tasteSlider.oninput = function() { tasteVal.textContent = this.value; };
     scoreSlider.oninput = function() { scoreVal.textContent = parseFloat(this.value).toFixed(1); };
 
-    // 4. Adjusted Field Logic
+    // 4. Toggle Adjusted Logic
     const adjCheck = document.getElementById('adjCheck');
     const adjNotes = document.getElementById('adjNotes');
-    adjCheck.onchange = () => {
-        adjNotes.classList.toggle('show', adjCheck.checked);
-    };
+    adjCheck.onchange = () => adjNotes.classList.toggle('show', adjCheck.checked);
 
-    // 5. Dynamic Colors
+    // 5. Theme Color Swapping
     const baseRadios = document.getElementsByName('baseType');
     const root = document.documentElement;
 
-    baseRadios.forEach(r => {
-        r.onchange = function() {
+    baseRadios.forEach(radio => {
+        radio.onchange = function() {
             const theme = this.value === 'matcha' ? '#8da676' : '#7b5e4f';
             root.style.setProperty('--accent', theme);
         };
@@ -59,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.onclick = () => {
         const entry = {
-            cafe: document.getElementById('cafeName').value || "Cafe Incognito",
-            drink: document.getElementById('drinkName').value || "The Regular",
+            cafe: document.getElementById('cafeName').value || "Unknown Cafe",
+            drink: document.getElementById('drinkName').value || "Unnamed Sip",
             score: scoreSlider.value,
             again: document.querySelector('input[name="returnChoice"]:checked').value,
-            date: dateField.value,
-            adjusted: adjCheck.checked ? document.getElementById('adjInput').value : "Standard Recipe"
+            date: dateInput.value,
+            adjusted: adjCheck.checked ? document.getElementById('adjInput').value : "Standard"
         };
 
         const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
@@ -78,33 +76,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 800);
     };
 
-    // 7. View Passport Logic
+    // 7. Navigation Control
     const mainPage = document.getElementById('main-page');
     const historyPage = document.getElementById('history-page');
     const historyList = document.getElementById('history-list');
 
     document.getElementById('viewPassport').onclick = () => {
         mainPage.style.display = 'none';
-        historyPage.classList.remove('hidden-page');
+        historyPage.classList.remove('hidden-view');
         renderHistory();
+        window.scrollTo(0,0);
     };
 
     document.getElementById('backToForm').onclick = () => {
-        historyPage.classList.add('hidden-page');
+        historyPage.classList.add('hidden-view');
         mainPage.style.display = 'block';
+        window.scrollTo(0,0);
     };
 
     function renderHistory() {
         const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
-        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; padding:50px; font-family:MatchaCih; opacity:0.5;">No stamps yet!</p>';
+        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; padding:40px; font-family:MatchaCih; opacity:0.5;">No stamps yet!</p>';
         history.forEach(item => {
             const div = document.createElement('div');
             div.className = 'history-item';
             div.innerHTML = `
                 <h4>${item.cafe}</h4>
                 <p><strong>Order:</strong> ${item.drink}</p>
-                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Return:</strong> ${item.again}</p>
-                <p style="font-size:0.7rem; color:#ccc; margin-top:5px;">Date: ${item.date}</p>
+                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
+                <p style="font-size:0.75rem; color:#aaa; margin-top:10px;">Visited: ${item.date}</p>
             `;
             historyList.appendChild(div);
         });
