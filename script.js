@@ -1,16 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Generate Sugar Cubes
+    // 1. Initialize Sugar Cubes (8 total)
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
     const sugarMessages = [
-        "Pure and simple!",
-        "A hint of sweet!",
-        "Not too sweet!",
-        "Just right!",
-        "Getting cozy!",
-        "Sweet tooth unlocked!",
-        "Sugar high loading...",
-        "Liquid candy mode!"
+        "Pure & Raw!", "Hint of Sugar", "Not too sweet!", "Just right!", 
+        "Getting cozy!", "Sweet tooth unlocked!", "Sugar Rush!", "Liquid Candy!"
     ];
 
     for (let i = 1; i <= 8; i++) {
@@ -36,53 +30,59 @@ document.addEventListener('DOMContentLoaded', () => {
         sweetComment.textContent = sugarMessages[index - 1];
     }
 
-    // 2. Smooth Slider Logic
-    const sliders = [
-        { input: 'bitterSlider', val: 'bitterVal' },
-        { input: 'smoothSlider', val: 'smoothVal' },
-        { input: 'scoreSlider', val: 'scoreVal' }
+    // 2. Smooth Slider + OSD Number Formatting
+    const sliderSettings = [
+        { id: 'bitterSlider', display: 'bitterVal' },
+        { id: 'smoothSlider', display: 'smoothVal' },
+        { id: 'scoreSlider', display: 'scoreVal' }
     ];
 
-    sliders.forEach(s => {
-        const el = document.getElementById(s.input);
-        const out = document.getElementById(s.val);
-        el.oninput = function() {
-            out.textContent = this.value;
-        }
+    sliderSettings.forEach(s => {
+        const slider = document.getElementById(s.id);
+        const output = document.getElementById(s.display);
+        
+        slider.oninput = function() {
+            let val = this.value;
+            // Pad single digits for that OSD vibe
+            if (s.id !== 'scoreSlider') {
+                output.textContent = val < 10 ? '0' + val : val;
+            } else {
+                output.textContent = parseFloat(val).toFixed(1);
+            }
+        };
     });
 
-    // 3. Adjusted Comments Logic
+    // 3. Adjusted Field Toggle
     const adjCheck = document.getElementById('adjCheck');
     const adjNotes = document.getElementById('adjNotes');
-    adjCheck.onchange = function() {
-        if(this.checked) adjNotes.classList.add('show');
-        else adjNotes.classList.remove('show');
+    adjCheck.onchange = () => {
+        adjNotes.classList.toggle('show', adjCheck.checked);
     };
 
-    // 4. Dynamic Theme (Coffee vs Matcha)
-    const baseType = document.getElementsByName('baseType');
+    // 4. Dynamic Color Theme
+    const baseRadios = document.getElementsByName('baseType');
     const root = document.documentElement;
-    const headerTitle = document.querySelector('h1');
+    const mainTitle = document.querySelector('h1');
 
-    baseType.forEach(radio => {
-        radio.onchange = function() {
+    baseRadios.forEach(r => {
+        r.onchange = function() {
             if (this.value === 'matcha') {
                 root.style.setProperty('--coffee-accent', '#8da676');
-                headerTitle.style.color = '#5b6d4b';
+                mainTitle.style.color = '#5b6d4b';
             } else {
                 root.style.setProperty('--coffee-accent', '#7b5e4f');
-                headerTitle.style.color = '#7b5e4f';
+                mainTitle.style.color = '#7b5e4f';
             }
-        }
+        };
     });
 
-    // 5. Submit Logic
+    // 5. Submit Action
     document.getElementById('submitBtn').onclick = function() {
-        this.innerHTML = "Stamped! ✨";
+        this.textContent = "Stamped! ✨";
         this.style.background = "#ffcc00";
         setTimeout(() => {
-            alert("Entry Saved to Sonia's Passport!");
+            alert("Entry Saved! Check your passport later.");
             window.location.reload();
-        }, 800);
+        }, 1000);
     };
 });
