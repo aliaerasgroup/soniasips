@@ -1,206 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Sonia's Sip Passport ☕🍵</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
-  <!-- Balonku via @font-face loaded in CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonia’s Synapse & Sips Passport</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Floating decorative buddies -->
-  <div class="bg-buddy buddy-cafe"><img src="cafe.png" alt="" /></div>
-  <div class="bg-buddy buddy-matcha-sit"><img src="matcha-sitting.png" alt="" /></div>
-  <div class="bg-buddy buddy-again"><img src="again.png" alt="" /></div>
-  <div class="bg-buddy buddy-drinking"><img src="drinking.png" alt="" /></div>
+    <div class="mobile-container">
+        <header>
+            <img src="cafe.png" alt="Cafe Icon" class="header-icon float-anim">
+            <h1>Sonia’s Synapse & Sips</h1>
+            <p class="subtitle">Ontario Brain Institute Internship 2026</p>
+        </header>
 
-  <!-- HEADER -->
-  <header class="passport-header">
-    <div class="passport-stamp-row">
-      <img src="cafe.png" class="stamp-icon spin-idle" alt="cafe" />
-      <img src="matcha-bowl.png" class="stamp-icon float-idle" alt="matcha" />
+        <main id="app-form">
+            <section class="card drink-toggle">
+                <div class="toggle-group">
+                    <label class="toggle-item">
+                        <input type="radio" name="drinkType" value="coffee" checked>
+                        <div class="toggle-box">
+                            <img src="coffee-glass.png" alt="Coffee">
+                            <span>Coffee</span>
+                        </div>
+                    </label>
+                    <label class="toggle-item">
+                        <input type="radio" name="drinkType" value="matcha">
+                        <div class="toggle-box">
+                            <img src="matcha-glass.png" alt="Matcha">
+                            <span>Matcha</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card">
+                <input type="text" id="drinkName" placeholder="What are we sipping?" class="input-field">
+                <div class="standard-adj">
+                    <span>Standard</span>
+                    <label class="switch">
+                        <input type="checkbox" id="isAdjusted">
+                        <span class="slider-toggle round"></span>
+                    </label>
+                    <span>Adjusted</span>
+                </div>
+            </section>
+
+            <section class="card sweetness-selector">
+                <h3>Sweetness Level</h3>
+                <div class="cube-row" id="sugarCubes">
+                    <img src="empty-cube.png" data-value="1" class="cube">
+                    <img src="empty-cube.png" data-value="2" class="cube">
+                    <img src="empty-cube.png" data-value="3" class="cube">
+                    <img src="empty-cube.png" data-value="4" class="cube">
+                    <img src="empty-cube.png" data-value="5" class="cube">
+                </div>
+            </section>
+
+            <section class="card slider-card">
+                <div class="slider-header">
+                    <img src="bitter.png" class="end-icon" alt="Bitter">
+                    <h3>Bitterness</h3>
+                    <img src="sweet.png" class="end-icon" alt="Sweet">
+                </div>
+                <input type="range" min="1" max="100" value="50" class="styled-slider" id="bitterSlider">
+                
+                <div class="slider-header mt-20">
+                    <img src="empty-glass.png" class="end-icon" alt="Thin">
+                    <h3>Smoothness</h3>
+                    <img src="drinking.png" class="end-icon" alt="Smooth">
+                </div>
+                <input type="range" min="1" max="100" value="50" class="styled-slider" id="smoothSlider">
+            </section>
+
+            <section class="card">
+                <h3>Overall Synapse Score</h3>
+                <input type="range" min="1" max="5" step="0.5" value="3" class="styled-slider rating-slider" id="overallRating">
+                <div class="rating-display"><span id="ratingValue">3.0</span> / 5</div>
+            </section>
+
+            <section class="card again-card">
+                <button id="againBtn" class="again-toggle">
+                    <img src="again.png" alt="Again?">
+                    <span>Would I get it again?</span>
+                </button>
+            </section>
+
+            <button class="submit-btn" id="saveEntry">Log Entry</button>
+        </main>
+
+        <img src="matcha-sitting.png" class="buddy-icon left-buddy">
+        <img src="matcha-bowl.png" class="buddy-icon right-buddy">
     </div>
-    <h1 class="title-main">Sonia's</h1>
-    <h1 class="title-sub">Sip Passport</h1>
-    <p class="subtitle">☕ Caffeinated chronicles from her OBI internship in Toronto 🍵</p>
-  </header>
 
-  <!-- ENTRY FORM -->
-  <main class="passport-book">
-
-    <!-- DRINK TYPE -->
-    <section class="card" id="card-drink">
-      <div class="card-label">What's in the cup?</div>
-      <div class="drink-toggle">
-        <button class="toggle-btn active" data-value="coffee" id="btn-coffee">
-          <img src="coffee-glass.png" alt="Coffee" />
-          <span>Coffee</span>
-        </button>
-        <button class="toggle-btn" data-value="matcha" id="btn-matcha">
-          <img src="matcha-glass.png" alt="Matcha" />
-          <span>Matcha</span>
-        </button>
-      </div>
-      <input type="hidden" id="drink-type" value="coffee" />
-    </section>
-
-    <!-- PLACE & NAME -->
-    <section class="card" id="card-info">
-      <div class="card-label">The Sip Details</div>
-      <div class="input-group">
-        <label for="place-name">📍 Place</label>
-        <input type="text" id="place-name" placeholder="e.g. Pilot Coffee Roasters" />
-      </div>
-      <div class="input-group">
-        <label for="drink-name">🏷️ Drink Name</label>
-        <input type="text" id="drink-name" placeholder="e.g. Oat Matcha Latte" />
-      </div>
-      <div class="input-group">
-        <label for="drink-date">📅 Date</label>
-        <input type="date" id="drink-date" />
-      </div>
-    </section>
-
-    <!-- STANDARD OR ADJUSTED -->
-    <section class="card" id="card-standard">
-      <div class="card-label">How'd you order it?</div>
-      <div class="order-toggle">
-        <button class="order-btn active" data-value="standard" id="btn-standard">
-          <span class="order-emoji">📋</span>
-          <span>Standard</span>
-          <small>as it comes</small>
-        </button>
-        <button class="order-btn" data-value="adjusted" id="btn-adjusted">
-          <span class="order-emoji">✏️</span>
-          <span>Adjusted</span>
-          <small>customised it</small>
-        </button>
-      </div>
-      <input type="hidden" id="order-type" value="standard" />
-      <div class="adjustment-note hidden" id="adjustment-note">
-        <label for="adjustments">What did you change?</label>
-        <input type="text" id="adjustments" placeholder="e.g. less sugar, oat milk..." />
-      </div>
-    </section>
-
-    <!-- TASTE SLIDERS -->
-    <section class="card" id="card-taste">
-      <div class="card-label">Taste Profile</div>
-
-      <!-- Smoothness -->
-      <div class="slider-group">
-        <div class="slider-header">
-          <span class="slider-label">Smoothness</span>
-          <span class="slider-value" id="smoothness-val">5</span>
-        </div>
-        <div class="slider-track-wrap">
-          <span class="slider-end-img"><img src="bitter.png" alt="rough" /></span>
-          <div class="slider-track">
-            <input type="range" id="smoothness" min="1" max="10" value="5" class="custom-slider" />
-          </div>
-          <span class="slider-end-img"><img src="sweet.png" alt="smooth" /></span>
-        </div>
-        <div class="slider-labels-row"><span>Rough</span><span>Silky</span></div>
-      </div>
-
-      <!-- Bitterness -->
-      <div class="slider-group">
-        <div class="slider-header">
-          <span class="slider-label">Bitterness</span>
-          <span class="slider-value" id="bitterness-val">5</span>
-        </div>
-        <div class="slider-track-wrap">
-          <span class="slider-end-img"><img src="sweet.png" alt="mild" /></span>
-          <div class="slider-track">
-            <input type="range" id="bitterness" min="1" max="10" value="5" class="custom-slider" />
-          </div>
-          <span class="slider-end-img"><img src="bitter.png" alt="bitter" /></span>
-        </div>
-        <div class="slider-labels-row"><span>Mild</span><span>Bold</span></div>
-      </div>
-    </section>
-
-    <!-- SWEETNESS - SUGAR CUBES -->
-    <section class="card" id="card-sweet">
-      <div class="card-label">Sweetness Level</div>
-      <div class="sweet-subtitle">Tap the cubes!</div>
-      <div class="sugar-row" id="sugar-row">
-        <!-- JS will inject 8 sugar cubes -->
-      </div>
-      <div class="sweet-labels-row">
-        <span>🫖 barely</span>
-        <span>🍯 dessert!</span>
-      </div>
-      <div class="sweet-description" id="sweet-desc">Perfectly Balanced ✨</div>
-    </section>
-
-    <!-- OVERALL RATING -->
-    <section class="card" id="card-rating">
-      <div class="card-label">Overall Rating</div>
-      <div class="star-row" id="star-row">
-        <!-- JS injects stars -->
-      </div>
-      <div class="rating-label" id="rating-label">✨ Give it a rating!</div>
-    </section>
-
-    <!-- WOULD YOU GET IT AGAIN? -->
-    <section class="card" id="card-again">
-      <div class="card-label">Would you get it again?</div>
-      <div class="again-row">
-        <button class="again-btn" data-value="yes" id="again-yes">
-          <img src="again.png" alt="Again!" />
-          <span>Absolutely!</span>
-        </button>
-        <button class="again-btn" data-value="maybe" id="again-maybe">
-          <img src="matcha-sitting.png" alt="Maybe" />
-          <span>Maybe...</span>
-        </button>
-        <button class="again-btn" data-value="no" id="again-no">
-          <img src="bitter.png" alt="No" />
-          <span>Probably not</span>
-        </button>
-      </div>
-      <input type="hidden" id="get-again" value="" />
-    </section>
-
-    <!-- NOTES -->
-    <section class="card" id="card-notes">
-      <div class="card-label">Sonia's Notes 📝</div>
-      <textarea id="notes" placeholder="First sip thoughts, vibes, the café ambiance, who you went with... spill it all ☕"></textarea>
-    </section>
-
-    <!-- SUBMIT -->
-    <button class="submit-btn" id="submit-btn">
-      <img src="drinking.png" alt="" class="submit-icon" />
-      Stamp My Passport!
-    </button>
-
-  </main>
-
-  <!-- ENTRIES LIST -->
-  <section class="entries-section" id="entries-section">
-    <h2 class="entries-title">📖 Past Sips</h2>
-    <div class="entries-list" id="entries-list">
-      <p class="no-entries">No sips recorded yet — get out there! ☕</p>
-    </div>
-  </section>
-
-  <!-- SUCCESS TOAST -->
-  <div class="toast" id="toast">
-    <img src="again.png" alt="" class="toast-icon" />
-    <span>Sip recorded! 🎉</span>
-  </div>
-
-  <footer class="passport-footer">
-    <img src="matcha-bowl.png" alt="" class="footer-icon" />
-    <span>Sonia's Sip Passport · OBI Toronto Internship 2026</span>
-    <img src="coffee-glass.png" alt="" class="footer-icon" />
-  </footer>
-
-  <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
