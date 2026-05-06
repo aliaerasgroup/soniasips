@@ -1,97 +1,111 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. GENERATE SUGAR CUBES (Reflecting claim: 8 cubes & left-fill logic)
+    // 1. Generate 6 Sugar Cubes
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
     const sugarMessages = [
-        "Not too sweet!",
-        "Just a hint!",
-        "Just right!",
-        "Getting cozy!",
-        "Sweet tooth unlocked!",
-        "Sugar Rush!",
-        "Sweetness Overload!",
-        "The Sugar Queen!"
+        "Pure & Raw", "Hint of Sugar", "Just right!", 
+        "Getting cozy!", "Sugar Rush!", "Sugar Tooth Unlocked!"
     ];
 
-    for (let i = 1; i <= 8; i++) {
+    let currentSweetness = 0;
+
+    for (let i = 1; i <= 6; i++) {
         const cube = document.createElement('img');
         cube.src = 'empty-cube.png';
         cube.className = 'sugar-cube';
-        cube.dataset.index = i;
-        cube.onclick = () => selectSweetness(i);
+        cube.onclick = () => {
+            currentSweetness = i;
+            updateCubes(i);
+        };
         sugarContainer.appendChild(cube);
     }
 
-    function selectSweetness(index) {
+    function updateCubes(index) {
         const cubes = document.querySelectorAll('.sugar-cube');
         cubes.forEach((c, idx) => {
-            // Fill all cubes to the left (Reflecting claim: filling left of selection)
-            if (idx < index) {
-                c.src = 'full-cube.png';
-                c.style.transform = 'scale(1.1)';
-            } else {
-                c.src = 'empty-cube.png';
-                c.style.transform = 'scale(1.0)';
-            }
+            c.src = (idx < index) ? 'full-cube.png' : 'empty-cube.png';
+            c.style.transform = (idx < index) ? 'scale(1.1)' : 'scale(1.0)';
         });
         sweetComment.textContent = sugarMessages[index - 1];
     }
 
-    // 2. VHS SLIDER LOGIC (Reflecting claim: padded numbers 05 vs 5)
-    const sliders = [
-        { slider: 'bitterSlider', display: 'bitterVal' },
-        { slider: 'smoothSlider', display: 'smoothVal' },
-        { slider: 'scoreSlider', display: 'scoreVal' }
-    ];
+    // 2. Sliders (No leading zeros, small size)
+    const tasteSlider = document.getElementById('tasteSlider');
+    const tasteVal = document.getElementById('tasteVal');
+    const scoreSlider = document.getElementById('scoreSlider');
+    const scoreVal = document.getElementById('scoreVal');
 
-    sliders.forEach(item => {
-        const sliderEl = document.getElementById(item.slider);
-        const displayEl = document.getElementById(item.display);
+    tasteSlider.oninput = function() { tasteVal.textContent = this.value; };
+    scoreSlider.oninput = function() { scoreVal.textContent = parseFloat(this.value).toFixed(1); };
 
-        sliderEl.oninput = function() {
-            let val = this.value;
-            // Pad numbers for Bitter and Smooth sliders
-            if (item.slider !== 'scoreSlider') {
-                displayEl.textContent = val < 10 ? '0' + val : val;
-            } else {
-                // Keep decimal for overall score
-                displayEl.textContent = parseFloat(val).toFixed(1);
-            }
-        };
-    });
-
-    // 3. ADJUSTMENT BOX TOGGLE
+    // 3. Adjusted Toggle
     const adjCheck = document.getElementById('adjCheck');
     const adjNotes = document.getElementById('adjNotes');
-    adjCheck.onchange = () => {
-        adjNotes.classList.toggle('show', adjCheck.checked);
-    };
+    adjCheck.onchange = () => adjNotes.classList.toggle('show', adjCheck.checked);
 
-    // 4. DYNAMIC THEME COLORS (Matcha vs Coffee)
-    const baseType = document.getElementsByName('baseType');
+    // 4. Color Theme (Subtitles & Accents)
+    const baseRadios = document.getElementsByName('baseType');
     const root = document.documentElement;
-    const headerH1 = document.querySelector('h1');
+    const titles = document.querySelectorAll('.section-title, h1, .standard-row');
 
-    baseType.forEach(radio => {
-        radio.onchange = function() {
-            if (this.value === 'matcha') {
-                root.style.setProperty('--coffee-theme', '#8da676');
-                headerH1.style.color = '#5b6d4b';
-            } else {
-                root.style.setProperty('--coffee-theme', '#7b5e4f');
-                headerH1.style.color = '#7b5e4f';
-            }
+    baseRadios.forEach(r => {
+        r.onchange = function() {
+            const theme = this.value === 'matcha' ? '#8da676' : '#7b5e4f';
+            root.style.setProperty('--accent', theme);
         };
     });
 
-    // 5. STAMP ACTION
-    document.getElementById('submitBtn').onclick = function() {
-        this.textContent = "Stamped! ✨";
-        this.style.background = "#ffcc00";
+    // 5. Passport Storage Logic
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.onclick = () => {
+        const entry = {
+            cafe: document.getElementById('cafeName').value || "Unknown Cafe",
+            drink: document.getElementById('drinkName').value || "Mystery Sip",
+            score: scoreSlider.value,
+            again: document.querySelector('input[name="returnChoice"]:checked').value,
+            date: new Date().toLocaleDateString()
+        };
+
+        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+        history.unshift(entry);
+        localStorage.setItem('sipHistory', JSON.stringify(history));
+
+        submitBtn.textContent = "Stamped! ✨";
         setTimeout(() => {
-            alert("Entry Saved to Sonia's Passport!");
-            window.location.reload();
-        }, 800);
+            submitBtn.textContent = "Stamp my passport!";
+            window.location.reload(); 
+        }, 1000);
     };
+
+    // 6. Navigation to History
+    const mainPage = document.getElementById('main-page');
+    const historyPage = document.getElementById('history-page');
+    const historyList = document.getElementById('history-list');
+
+    document.getElementById('viewPassport').onclick = () => {
+        mainPage.classList.add('hidden');
+        historyPage.classList.remove('hidden');
+        renderHistory();
+    };
+
+    document.getElementById('backToForm').onclick = () => {
+        historyPage.classList.add('hidden');
+        mainPage.classList.remove('hidden');
+    };
+
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; opacity:0.5;">No stamps yet!</p>';
+        history.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <h4>${item.cafe}</h4>
+                <p><strong>Drink:</strong> ${item.drink}</p>
+                <p><strong>Score:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
+                <p style="font-size:0.6rem; color:#aaa;">${item.date}</p>
+            `;
+            historyList.appendChild(div);
+        });
+    }
 });
