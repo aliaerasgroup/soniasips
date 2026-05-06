@@ -9,25 +9,28 @@
 
 :root {
     --bg-cream: #fef9f5;
-    --coffee: #7b5e4f;
+    --accent: #7b5e4f; /* Dynamic */
     --matcha: #8da676;
-    --accent: #7b5e4f;
-    --text-main: #4a4a4a;
+    --coffee: #7b5e4f;
+    --text-dark: #444;
 }
 
+/* Hard reset to prevent leakage */
 * { 
     box-sizing: border-box; 
+    margin: 0; 
+    padding: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: #f0f0f0;
     font-family: 'Questrial', sans-serif;
-    margin: 0;
     display: flex;
     justify-content: center;
-    color: var(--text-main);
+    color: var(--text-dark);
     overflow-x: hidden;
+    width: 100vw;
 }
 
 .app-wrapper {
@@ -40,10 +43,10 @@ body {
     box-shadow: 0 0 40px rgba(0,0,0,0.08);
 }
 
-header { text-align: center; margin-bottom: 25px; }
+header { text-align: center; margin-bottom: 20px; }
 
 .header-icon-static { 
-    width: 65px; height: auto; transform: rotate(-8deg); margin-bottom: 10px; 
+    width: 60px; height: auto; transform: rotate(-8deg); margin-bottom: 8px; 
 }
 
 h1, .history-title {
@@ -51,20 +54,16 @@ h1, .history-title {
     font-size: 2.2rem;
     color: var(--accent);
     line-height: 1.1;
-    margin: 0;
 }
-
-.obi-tag { font-size: 0.75rem; font-weight: bold; color: #ccc; margin-top: 5px; }
 
 .section-title {
     font-family: 'MatchaCih';
     color: var(--accent);
     text-align: center;
     font-size: 1.4rem;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
-/* Cards & Text Breathing */
 .card {
     background: #ffffff;
     border-radius: 30px;
@@ -72,30 +71,45 @@ h1, .history-title {
     margin-bottom: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     position: relative;
-    z-index: 10;
+    z-index: 10; /* Front of buddies */
 }
 
-/* Input Leak Fixes */
-.input-group { margin-bottom: 15px; }
-.input-group label { display: block; font-size: 0.75rem; font-weight: bold; color: #bbb; margin-bottom: 5px; }
+/* Hide Radio Buttons Everywhere */
+input[type="radio"] { display: none !important; }
+
+/* 2-Pane Choice (Coffee vs Matcha) */
+.cup-toggle { display: flex; gap: 12px; width: 100%; }
+.cup-option { flex: 1; cursor: pointer; }
+.cup-card {
+    background: #fdfdfd; border: 3px solid #f2f2f2; border-radius: 20px;
+    padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    transition: 0.2s;
+}
+.cup-card img { width: 42px; }
+.cup-card span { font-family: 'MatchaCih'; font-size: 1.2rem; }
+.cup-option input:checked + .cup-card { border-color: var(--accent); transform: scale(1.03); }
+
+/* Inputs (No leakage) */
+.input-group { margin-bottom: 12px; }
+.input-group label { display: block; font-size: 0.75rem; font-weight: bold; color: #ccc; margin-bottom: 5px; }
 .input-group input {
     width: 100%; border: 2px solid #f9f9f9; border-radius: 12px; padding: 12px;
     background: #fafafa; font-family: 'Questrial'; outline: none;
 }
 
-/* Slider Formatting (VHS & Centered) */
+/* VHS Centered Values */
 .slider-container { text-align: center; }
-.slider-labels { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.slider-labels { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .slider-labels h3 { font-family: 'MatchaCih'; font-size: 1.2rem; margin: 0; }
-.end-icon { width: 32px; }
+.end-icon { width: 30px; }
 
 .osd-value-center {
     font-family: 'VHS-OSD', monospace;
     color: var(--accent);
     font-size: 1.2rem;
-    margin-top: 10px;
+    margin-top: 8px;
 }
-.score-large { font-size: 2.2rem; margin-top: 15px; }
+.score-large { font-size: 2rem; margin-top: 12px; }
 
 .kawaii-slider {
     -webkit-appearance: none; width: 100%; height: 10px; border-radius: 10px; background: #eee; outline: none;
@@ -105,14 +119,14 @@ h1, .history-title {
     border: 4px solid white; border-radius: 50%; cursor: pointer;
 }
 
-/* Sugar Section */
-.sugar-row { display: flex; justify-content: space-between; margin: 15px 0; }
-.sugar-cube { width: 42px; cursor: pointer; transition: 0.2s; }
+/* Sugar Cubes */
+.sugar-row { display: flex; justify-content: space-between; margin: 12px 0; }
+.sugar-cube { width: 40px; cursor: pointer; transition: 0.2s; }
 .comment-popup-osd { 
     text-align: center; font-family: 'VHS-OSD'; color: var(--accent); font-size: 0.9rem; 
 }
 
-/* Toggle Switch */
+/* Adjustments Toggle */
 .standard-row { 
     display: flex; justify-content: center; align-items: center; gap: 12px; 
     font-family: 'MatchaCih'; font-size: 1.3rem; color: var(--accent);
@@ -137,74 +151,47 @@ input:checked + .toggle-slider:before { transform: translateX(22px); }
     font-family: 'Questrial'; font-size: 1rem; resize: none; outline: none;
 }
 
-/* UI FIX: Perfectly Equal Return Buttons */
+/* UI FIX: 3 Equal Return Buttons */
 .return-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Force 3 equal columns */
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px;
     width: 100%;
 }
-.return-btn { cursor: pointer; display: block; }
-.return-btn input { display: none; }
+.return-btn { cursor: pointer; }
 .return-content {
-    background: #fafafa;
-    border: 3px solid #f2f2f2;
-    border-radius: 20px;
-    padding: 15px 5px;
-    text-align: center;
-    transition: 0.2s;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background: #fafafa; border: 3px solid #f2f2f2; border-radius: 20px;
+    padding: 15px 5px; text-align: center; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.return-content img { width: 35px; margin-bottom: 8px; }
-.return-content span { font-size: 0.65rem; font-weight: bold; line-height: 1.1; font-family: 'Questrial'; }
+.return-content img { width: 32px; margin-bottom: 6px; }
+.return-content span { font-size: 0.65rem; font-weight: bold; font-family: 'Questrial'; line-height: 1.1; }
+.return-btn input:checked + .return-content { border-color: var(--accent); background: #fff; transform: scale(1.04); }
 
-.return-btn input:checked + .return-content { 
-    border-color: var(--accent); 
-    background: #fff; 
-    transform: scale(1.05);
-}
-
-/* Cup Selection Fix */
-.cup-toggle { display: flex; gap: 12px; }
-.cup-option { flex: 1; cursor: pointer; }
-.cup-card {
-    background: #fdfdfd; border: 3px solid #f2f2f2; border-radius: 20px; padding: 15px;
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-}
-.cup-card img { width: 45px; }
-.cup-card span { font-family: 'MatchaCih'; font-size: 1.2rem; }
-.cup-option input:checked + .cup-card { border-color: var(--accent); }
-
-/* Buttons & Layering */
+/* Buttons & History Formatting */
 .stamp-btn {
-    width: 100%; padding: 20px; border-radius: 25px; background: var(--accent);
+    width: 100%; padding: 18px; border-radius: 25px; background: var(--accent);
     color: white; border: none; font-family: 'MatchaCih'; font-size: 1.8rem;
     box-shadow: 0 6px 0 #5a4439; cursor: pointer; margin-top: 10px;
-    position: relative;
-    z-index: 50; /* Front of everything */
+    position: relative; z-index: 50; /* Front */
 }
 .view-link-btn {
     display: block; width: 100%; background: none; border: none; color: #ccc;
     font-weight: bold; margin: 30px 0 50px; cursor: pointer; font-family: 'Questrial';
 }
 
-/* History - Breathing Text */
 .hidden-view { display: none !important; }
 .history-item {
     background: white; border-radius: 25px; padding: 25px; margin-bottom: 20px;
     border-left: 10px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03);
 }
-.history-item h4 { font-family: 'MatchaCih'; font-size: 1.6rem; color: var(--accent); margin: 0 0 10px 0; }
-.history-item p { line-height: 1.6; margin: 8px 0; font-size: 0.95rem; }
+.history-item h4 { font-family: 'MatchaCih'; font-size: 1.6rem; color: var(--accent); margin-bottom: 8px; }
+.history-item p { line-height: 1.7; margin: 10px 0; font-size: 1rem; color: #555;}
 
-/* Decor - Layered to Background */
+/* Decor Layering */
 .bg-buddy { position: absolute; z-index: 1; opacity: 0.6; pointer-events: none; }
-.bowl-static { bottom: 40px; left: -10px; width: 90px; }
-.sitter-float { top: 140px; right: -15px; width: 70px; }
+.bowl-static { bottom: 40px; left: -10px; width: 85px; } /* Larger & Static */
+.sitter-float { top: 140px; right: -15px; width: 65px; }
 
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 .sitter-float { animation: float 5s ease-in-out infinite; }
