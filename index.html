@@ -13,7 +13,7 @@
         <header>
             <img src="cafe.png" alt="Cafe Icon" class="header-icon bounce">
             <h1>Sonia’s Synapse & Sips Passport</h1>
-            <p class="obi-tag">Ontario Brain Institute Internship • Toronto</p>
+            <p class="obi-tag">Ontario Brain Institute Internship 2026</p>
         </header>
 
         <main id="passport-form">
@@ -23,7 +23,7 @@
                     <label class="cup-option">
                         <input type="radio" name="baseType" value="coffee" checked>
                         <div class="cup-card">
-                            <img src="coffee-glass.png" alt="Iced Coffee">
+                            <img src="coffee-glass.png" alt="Coffee">
                             <span>Coffee</span>
                         </div>
                     </label>
@@ -61,7 +61,7 @@
                         <img src="sweet.png" alt="Sweet">
                     </div>
                     <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="bitterSlider">
-                    <div class="slider-value" id="bitterVal">5</div>
+                    <div class="osd-value" id="bitterVal">05</div>
                 </div>
 
                 <div class="slider-row">
@@ -71,7 +71,7 @@
                         <img src="drinking.png" alt="Smooth">
                     </div>
                     <input type="range" min="1" max="10" value="5" class="kawaii-slider" id="smoothSlider">
-                    <div class="slider-value" id="smoothVal">5</div>
+                    <div class="osd-value" id="smoothVal">05</div>
                 </div>
             </section>
 
@@ -92,7 +92,7 @@
                     <span>Adjusted</span>
                 </div>
                 <div id="adjNotes" class="hidden-notes">
-                    <textarea placeholder="What changes were made? (e.g., less ice, extra shot...)"></textarea>
+                    <textarea placeholder="What changes were made?"></textarea>
                 </div>
             </section>
 
@@ -125,8 +125,8 @@
 
             <section class="card">
                 <h3 class="center-title">Overall Score</h3>
-                <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider large-slider" id="scoreSlider">
-                <div class="final-score" id="scoreVal">3.0</div>
+                <input type="range" min="1" max="5" step="0.5" value="3.0" class="kawaii-slider" id="scoreSlider">
+                <div class="osd-value score-large" id="scoreVal">3.0</div>
             </section>
 
             <button class="stamp-btn" id="submitBtn">Stamp my passport!</button>
@@ -134,7 +134,7 @@
         </main>
         
         <img src="matcha-bowl.png" class="buddy-icon left-buddy">
-        <img src="matcha-glass.png" class="buddy-icon right-buddy">
+        <img src="matcha-sitting.png" class="buddy-icon right-buddy">
     </div>
 
     <script src="script.js"></script>
