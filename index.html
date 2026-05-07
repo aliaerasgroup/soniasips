@@ -10,11 +10,24 @@
 <body>
 
     <div class="app-wrapper">
-        <div id="main-page">
+        <div id="auth-page" class="hidden-view">
             <header>
                 <img src="cafe.png" alt="Cafe" class="header-icon-static">
+                <h1>Welcome, Sonia!</h1>
+                <p class="obi-tag">Sign in to sync your passport</p>
+            </header>
+            <button class="stamp-btn" id="loginBtn">Login with Google</button>
+        </div>
+
+        <div id="main-page" class="hidden-view">
+            <header>
+                <div class="user-profile">
+                   <p id="userNameDisplay"></p>
+                   <button id="logoutBtn" class="small-link">Logout</button>
+                </div>
+                <img src="cafe.png" alt="Cafe" class="header-icon-static">
                 <h1>Sonia’s Synapse & Sips Passport</h1>
-                <p class="obi-tag">Ontario Brain Institute Internship 2026 • Toronto</p>
+                <p class="obi-tag">OBI Internship 2026 • Toronto</p>
             </header>
 
             <main>
@@ -39,19 +52,24 @@
                 </section>
 
                 <section class="card">
-                    <h2 class="section-title">What are we sipping?</h2>
+                    <h2 class="section-title">Sip Details</h2>
                     <div class="input-group">
                         <label>Cafe Name</label>
                         <input type="text" id="cafeName" placeholder="RoastAroma Specialty Cafe">
                     </div>
                     <div class="input-group">
                         <label>Drink Order</label>
-                        <input type="text" id="drinkName" placeholder="Iced White Mocha">
+                        <input type="text" id="drinkName" placeholder="oat milk matcha latte">
                     </div>
                     <div class="input-group">
                         <label>Date</label>
                         <input type="date" id="sipDate">
                     </div>
+                </section>
+
+                <section class="card">
+                    <h2 class="section-title">General Thoughts</h2>
+                    <textarea id="generalComments" placeholder="My thoughts, who I went with, etc."></textarea>
                 </section>
 
                 <section class="card">
@@ -93,21 +111,28 @@
                         <label class="return-btn">
                             <input type="radio" name="returnChoice" value="Absolutely!" checked>
                             <div class="return-content">
-                                <img src="again.png" alt="Yes">
+                                <img src="again.png">
                                 <span>Absolutely!</span>
                             </div>
                         </label>
                         <label class="return-btn">
                             <input type="radio" name="returnChoice" value="Maybe...">
                             <div class="return-content">
-                                <img src="matcha-sitting.png" alt="Maybe">
+                                <img src="matcha-sitting.png">
                                 <span>Maybe...</span>
+                            </div>
+                        </label>
+                        <label class="return-btn">
+                            <input type="radio" name="returnChoice" value="Probably not">
+                            <div class="return-content">
+                                <img src="probably-not.png">
+                                <span>Probably not</span>
                             </div>
                         </label>
                         <label class="return-btn">
                             <input type="radio" name="returnChoice" value="Not again">
                             <div class="return-content">
-                                <img src="drinking.png" alt="No">
+                                <img src="drinking.png">
                                 <span>Not again</span>
                             </div>
                         </label>
@@ -130,16 +155,18 @@
         <div id="history-page" class="hidden-view">
             <header>
                 <h1 class="history-title">Passport History</h1>
-                <p class="obi-tag">Sonia's Brainy Brews</p>
+                <div class="history-actions">
+                    <button id="exportEmail" class="action-btn">📧 Export to Email</button>
+                </div>
             </header>
             <div id="history-list"></div>
-            <button class="stamp-btn back-btn" id="backToForm">Add New Entry</button>
+            <button class="stamp-btn back-btn" id="backToForm">New Entry</button>
         </div>
         
         <img src="matcha-bowl.png" class="bg-buddy bowl-static">
         <img src="matcha-sitting.png" class="bg-buddy sitter-float">
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
