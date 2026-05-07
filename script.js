@@ -1,48 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// YOUR FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "AIzaSyDwFwkwmx_kqAf_FqnFKYCB9UHpw2xCnb0",
-  authDomain: "sonia-sips.firebaseapp.com",
-  databaseURL: "https://sonia-sips-default-rtdb.firebaseio.com",
-  projectId: "sonia-sips",
-  storageBucket: "sonia-sips.firebasestorage.app",
-  messagingSenderId: "1034846603122",
-  appId: "1:1034846603122:web:5dfba1d9171db1dee57feb"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
-
-let currentUser = null;
-
 document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById('sipDate');
     if(dateInput) dateInput.valueAsDate = new Date();
 
-    // 1. Auth Observer
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentUser = user;
-            document.getElementById('userNameDisplay').textContent = `Hi, ${user.displayName.split(' ')[0]}!`;
-            document.getElementById('auth-page').classList.add('hidden-view');
-            document.getElementById('main-page').classList.remove('hidden-view');
-        } else {
-            currentUser = null;
-            document.getElementById('main-page').classList.add('hidden-view');
-            document.getElementById('history-page').classList.add('hidden-view');
-            document.getElementById('auth-page').classList.remove('hidden-view');
-        }
-    });
-
-    document.getElementById('loginBtn').onclick = () => signInWithPopup(auth, provider);
-    document.getElementById('logoutBtn').onclick = () => signOut(auth);
-
-    // 2. Sugar Cubes (6)
+    // 1. Sugar Cubes Logic (6 cubes)
     const sugarContainer = document.getElementById('sugarContainer');
     const sweetComment = document.getElementById('sweetComment');
     const sugarMessages = ["PURE & RAW", "HINT OF SUGAR", "JUST RIGHT", "GETTING COZY", "SUGAR RUSH", "SUGAR TOOTH UNLOCKED"];
@@ -60,13 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sugarContainer.appendChild(cube);
     }
 
-    // 3. Slider Sync
+    // 2. Slider Sync
     const tasteSlider = document.getElementById('tasteSlider');
     const scoreSlider = document.getElementById('scoreSlider');
     tasteSlider.oninput = function() { document.getElementById('tasteVal').textContent = this.value; };
     scoreSlider.oninput = function() { document.getElementById('scoreVal').textContent = parseFloat(this.value).toFixed(1); };
 
-    // 4. Toggle/Color Theme
+    // 3. Theme & Adjustment Toggles
     const baseRadios = document.getElementsByName('baseType');
     baseRadios.forEach(r => {
         r.onchange = function() {
@@ -78,65 +38,75 @@ document.addEventListener('DOMContentLoaded', () => {
     const adjCheck = document.getElementById('adjCheck');
     adjCheck.onchange = () => document.getElementById('adjNotes').classList.toggle('show', adjCheck.checked);
 
-    // 5. Submit to Firestore
-    document.getElementById('submitBtn').onclick = async () => {
-        if(!currentUser) return;
-        
+    // 4. Save Entry to LocalStorage
+    document.getElementById('submitBtn').onclick = () => {
         const entry = {
-            uid: currentUser.uid,
             type: document.querySelector('input[name="baseType"]:checked').value,
             cafe: document.getElementById('cafeName').value || "Unnamed Cafe",
             drink: document.getElementById('drinkName').value || "Mystery Sip",
-            thoughts: document.getElementById('generalComments').value,
+            comments: document.getElementById('generalComments').value,
             score: scoreSlider.value,
             again: document.querySelector('input[name="returnChoice"]:checked').value,
             date: dateInput.value,
-            adjusted: adjCheck.checked ? document.getElementById('adjInput').value : "Standard",
-            timestamp: Date.now()
+            adjusted: adjCheck.checked ? document.getElementById('adjInput').value : "None"
         };
 
-        try {
-            await addDoc(collection(db, "entries"), entry);
-            document.getElementById('submitBtn').textContent = "Stamped! ✨";
-            setTimeout(() => location.reload(), 1000);
-        } catch (e) { console.error(e); }
+        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+        history.unshift(entry);
+        localStorage.setItem('sipHistory', JSON.stringify(history));
+
+        document.getElementById('submitBtn').textContent = "Stamped! ✨";
+        setTimeout(() => location.reload(), 800);
     };
 
-    // 6. Navigation & History
-    document.getElementById('viewPassport').onclick = async () => {
-        document.getElementById('main-page').style.display = 'none';
-        document.getElementById('history-page').classList.remove('hidden-view');
-        
-        const q = query(collection(db, "entries"), where("uid", "==", currentUser.uid), orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        const list = document.getElementById('history-list');
-        list.innerHTML = '';
+    // 5. Navigation Logic
+    const mainPage = document.getElementById('main-page');
+    const historyPage = document.getElementById('history-page');
+    const historyList = document.getElementById('history-list');
 
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const div = document.createElement('div');
-            div.className = `history-item theme-${data.type}`;
-            div.innerHTML = `
-                <h4>${data.cafe}</h4>
-                <p><strong>Order:</strong> ${data.drink}</p>
-                <p><strong>Rating:</strong> ${data.score}/5.0 • <strong>Return:</strong> ${data.again}</p>
-                ${data.thoughts ? `<p style="font-style:italic; opacity:0.7;">"${data.thoughts}"</p>` : ''}
-                <p style="font-size:0.7rem; color:#ccc; margin-top:10px;">Date: ${data.date}</p>
-            `;
-            list.appendChild(div);
-        });
+    document.getElementById('viewPassport').onclick = () => {
+        mainPage.style.display = 'none';
+        historyPage.classList.remove('hidden-view');
+        renderHistory();
+        window.scrollTo(0,0);
     };
 
-    document.getElementById('backToForm').onclick = () => location.reload();
+    document.getElementById('backToForm').onclick = () => {
+        historyPage.classList.add('hidden-view');
+        mainPage.style.display = 'block';
+        window.scrollTo(0,0);
+    };
 
-    document.getElementById('exportEmail').onclick = async () => {
-        const q = query(collection(db, "entries"), where("uid", "==", currentUser.uid));
-        const snapshot = await getDocs(q);
-        let body = "Passport Export:\n\n";
-        snapshot.forEach(doc => {
-            const d = doc.data();
-            body += `${d.date} | ${d.cafe}: ${d.drink}\nScore: ${d.score}/5.0\n\n`;
+    // 6. Email Export Logic
+    document.getElementById('exportEmail').onclick = () => {
+        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+        if(history.length === 0) return alert("Passport is empty!");
+
+        let body = "Sonia's Synapse & Sips Passport Export:\n\n";
+        history.forEach(item => {
+            body += `${item.date} | ${item.cafe}\nOrder: ${item.drink}\nScore: ${item.score}/5.0 | Again? ${item.again}\nThoughts: ${item.comments || 'No comments'}\n\n`;
         });
+
         window.location.href = `mailto:?subject=Sip Passport Export&body=${encodeURIComponent(body)}`;
     };
+
+    // 7. Render Color-Coded History
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('sipHistory') || '[]');
+        historyList.innerHTML = history.length ? '' : '<p style="text-align:center; padding:50px; opacity:0.5;">Passport Empty!</p>';
+        
+        history.forEach(item => {
+            const div = document.createElement('div');
+            // Apply dynamic color coding class
+            div.className = `history-item theme-${item.type}`;
+            div.innerHTML = `
+                <h4>${item.cafe}</h4>
+                <p><strong>Order:</strong> ${item.drink}</p>
+                <p><strong>Rating:</strong> ${item.score}/5.0 • <strong>Again?</strong> ${item.again}</p>
+                ${item.comments ? `<div class="history-comments">"${item.comments}"</div>` : ''}
+                <p style="font-size:0.7rem; color:#ccc; margin-top:15px;">Date: ${item.date}</p>
+            `;
+            historyList.appendChild(div);
+        });
+    }
 });
